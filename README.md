@@ -33,15 +33,18 @@ make
 Ejecuta **fastp** para cada muestra para generar los reportes de calidad. A continuación, te muestro cómo puedes hacerlo en un bucle de shell para las 11 muestras mencionadas:
 
 ```bash
-for sample in CIS CM CTS DCS DSM TM NS DM OS DIM SIM
+for sample in CCM_S2 DCM_S7 DSM_S11 ICM_S5 ISM_S12 NCM_S8 OCM_S4 QCM_S6 SCM_S3 SSM_S9 UCM_S1 ZCM_S10
 do
-    fastp -i /ruta/a/las/muestras/${sample}_R1.fastq.gz \
-          -I /ruta/a/las/muestras/${sample}_R2.fastq.gz \
-          -o /ruta/al/directorio/1_QC/${sample}_R1_clean.fastq.gz \
-          -O /ruta/al/directorio/1_QC/${sample}_R2_clean.fastq.gz \
-          -j /ruta/al/directorio/1_QC/1_raw_data_infor/${sample}_fastp_report.json \
-          -h /ruta/al/directorio/1_QC/1_raw_data_infor/${sample}_fastp_report.html \
-          -w 4
+    for lane in L001 L002 L003 L004
+    do
+        fastp -i ../raw_data/${sample}_${lane}_R1_001.fastq.gz \
+              -I ../raw_data/${sample}_${lane}_R2_001.fastq.gz \
+              -o ../1_QC/${sample}_${lane}_R1_clean.fastq.gz \
+              -O ../1_QC/${sample}_${lane}_R2_clean.fastq.gz \
+              -j ../1_QC/1_raw_data_infor/${sample}_${lane}_fastp_report.json \
+              -h ../1_QC/1_raw_data_infor/${sample}_${lane}_fastp_report.html \
+              -w 8
+    done
 done
 ```
 
