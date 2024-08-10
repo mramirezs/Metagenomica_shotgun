@@ -5,10 +5,9 @@
 Primero, crea un directorio en tu sistema de archivos donde almacenarás los resultados de la evaluación de calidad:
 
 ```bash
-mkdir -p /ruta/al/directorio/1_QC/1_raw_data_infor/
+mkdir -p 1_QC/
+mkdir -p 1_QC/1_raw_data_infor/
 ```
-
-Aquí, `/ruta/al/directorio/` debe ser reemplazada con la ruta donde deseas guardar tus archivos.
 
 ## 2. **Instalación de fastp**
 
@@ -30,7 +29,7 @@ make
 
 ## 3. **Ejecución de fastp para la Evaluación de la Calidad**
 
-Ejecuta **fastp** para cada muestra para generar los reportes de calidad. A continuación, te muestro cómo puedes hacerlo en un bucle de shell para las 11 muestras mencionadas:
+Ejecuta **fastp** para cada muestra para generar los reportes de calidad. A continuación, te muestro cómo puedes hacerlo en un bucle de shell para las 12 muestras mencionadas:
 
 ```bash
 for sample in CCM_S2 DCM_S7 DSM_S11 ICM_S5 ISM_S12 NCM_S8 OCM_S4 QCM_S6 SCM_S3 SSM_S9 UCM_S1 ZCM_S10
@@ -66,10 +65,10 @@ Puedes consolidar las estadísticas en un archivo Excel para un resumen general:
 
 ```bash
 # Combinar los JSON en un archivo CSV para revisión (opcional)
-jq -s 'reduce .[] as $item ({}; . * $item)' /ruta/al/directorio/1_QC/1_raw_data_infor/*.json > /ruta/al/directorio/1_QC/1_raw_data_infor/All_raw_data_infor.json
+jq -s 'reduce .[] as $item ({}; . * $item)' ../1_QC/1_raw_data_infor/*.json > ../1_QC/1_raw_data_infor/All_raw_data_infor.json
 
 # Convertir JSON a CSV
-cat /ruta/al/directorio/1_QC/1_raw_data_infor/All_raw_data_infor.json | jq -r '[.summary.before_filtering, .summary.after_filtering] | (["Metric","RawData","CleanData"] | @csv), (.[] | [.total_reads, .total_bases, .q20_bases, .q30_bases, .gc_content] | @csv)' > /ruta/al/directorio/1_QC/1_raw_data_infor/All_raw_data_infor.csv
+cat ../1_QC/1_raw_data_infor/All_raw_data_infor.json | jq -r '[.summary.before_filtering, .summary.after_filtering] | (["Metric","RawData","CleanData"] | @csv), (.[] | [.total_reads, .total_bases, .q20_bases, .q30_bases, .gc_content] | @csv)' > ../1_QC/1_raw_data_infor/All_raw_data_infor.csv
 ```
 
 Esto generará un archivo CSV con un resumen de las estadísticas antes y después de la filtración.
